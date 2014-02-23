@@ -4,7 +4,7 @@ import json
 import requests
 import time
 
-def backup(user, outfile):
+def backup(user, outfile, verbose=False):
     headers = {'User-Agent': 'Reddit Backupper'}
     urltemplate = "http://www.reddit.com/user/{}.json?count={}&after={}"
     after = ""
@@ -16,7 +16,8 @@ def backup(user, outfile):
     try:
         while 1:
             url = urltemplate.format(user, count, after)
-            print url
+            if verbose:
+                print url
             r = requests.get(url, headers=headers).json()
 
             things = r["data"]["children"]
@@ -43,9 +44,11 @@ if __name__ == "__main__":
     parser.add_argument('user', help='The user to backup')
     parser.add_argument('-o', dest="outfile",
                         help='The file to output (defaults to <user>.json)')
+    parser.add_argument('-v', dest="verbose", action='store_true',
+                        help='print out all URLs visited')
 
     args = parser.parse_args()
     fname = "{}.json".format(args.user) if not args.outfile else args.outfile
     fout = open(fname, 'w')
 
-    backup(args.user, fout)
+    backup(args.user, fout, args.verbose)
