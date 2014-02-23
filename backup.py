@@ -20,8 +20,7 @@ def backup(user, outfile, verbose=False):
                 print url
             r = requests.get(url, headers=headers).json()
 
-            things = r["data"]["children"]
-            data += things
+            data.extend(r["data"]["children"])
 
             last_id = r["data"]["after"]
             if not last_id or last_id == after:
