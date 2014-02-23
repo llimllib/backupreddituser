@@ -33,9 +33,8 @@ def backup(user, outfile, verbose=False):
     except Exception as e:
         print e
 
-    fout = open("comments.json", 'w')
-    fout.write(json.dumps(data, indent=4))
-    fout.close()
+    outfile.write(json.dumps(data, indent=4))
+    outfile.close()
 
 if __name__ == "__main__":
     import argparse
